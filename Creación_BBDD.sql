@@ -1,3 +1,7 @@
+
+-- NOTA: EL PAIR PROGRAMMING DE CREACIÓN DE BBDD Y DE MODIFICACIÓN E INSERCIÓN DE DATOS ESTÁN EN EL MISMO SCRIPT
+-- PAIR PROGRAMMING SSQL Creación BBDD (lección 5)   
+
 CREATE SCHEMA `tienda_zapatillas`;
 USE `tienda_zapatillas`;
 
@@ -23,7 +27,7 @@ CREATE TABLE empleados (
 id_empleado INT AUTO_INCREMENT NOT NULL,
 nombre VARCHAR(45) NOT NULL,
 tienda VARCHAR(45) NOT NULL,
-salario INT, -- especificar que podemos meter el valor NULL
+salario INT, 
 fecha_incorporacion DATE NOT NULL,
 PRIMARY KEY (id_empleado));
     
@@ -51,7 +55,8 @@ CONSTRAINT fk_facturas_zapatillas
     REFERENCES zapatillas (id_zapatilla)
     ON DELETE CASCADE 
     ON UPDATE CASCADE);
-    
+
+-- PAIR PROGRAMMING SQL Modificación e Inserción de Datos (lección 6)    
 
 ALTER TABLE `zapatillas`
 	ADD COLUMN `marca` VARCHAR(45) NOT NULL,
@@ -70,10 +75,15 @@ INSERT INTO `zapatillas`(`moldelo`, `color`, `marca`, `talla`)
 		VALUES ('XQYUN', 'Negro', 'Nike', 42),
 				('UOPMN', 'Rosas', 'Nike', 39),
                 ('OPNYT', 'Verdes', 'Adidas', 35);
-
+                
+-- Para que en la siguiente tabla en la columna 'salario' pueda haber un valor nulo, tenemos primero que cambiar el atributo de la columna 'salario' para que admita el valor NULL
+ALTER TABLE `empleados`
+	MODIFY COLUMN `salario`FLOAT NULL;
+    
+-- Y ahora sí que cogerá el valor NULL en salario:
 INSERT INTO `empleados`(`nombre`, `tienda`, `salario`, `fecha_incorporacion`)
 	VALUES ('Laura', 'Alcobendas', 25987, 20100903),
-			('María', 'Sevilla', 0, 20010411), -- Modificar valor 0
+			('María', 'Sevilla', NULL, 20010411), 
             ('Esther', 'Oviedo', 30165.98, 20001129);
  
  INSERT INTO `clientes`(`nombre`, `numero_telefono`, `email`, `direccion`, `ciudad`, `provincia`, `codigo_postal`)
