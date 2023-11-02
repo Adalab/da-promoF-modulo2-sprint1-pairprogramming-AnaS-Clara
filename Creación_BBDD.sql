@@ -23,7 +23,7 @@ CREATE TABLE empleados (
 id_empleado INT AUTO_INCREMENT NOT NULL,
 nombre VARCHAR(45) NOT NULL,
 tienda VARCHAR(45) NOT NULL,
-salario INT,
+salario INT, -- especificar que podemos meter el valor NULL
 fecha_incorporacion DATE NOT NULL,
 PRIMARY KEY (id_empleado));
     
@@ -53,8 +53,53 @@ CONSTRAINT fk_facturas_zapatillas
     ON UPDATE CASCADE);
     
 
+ALTER TABLE `zapatillas`
+	ADD COLUMN `marca` VARCHAR(45) NOT NULL,
+	ADD COLUMN `talla` INT NOT NULL;
 
+ALTER TABLE `empleados`
+	MODIFY COLUMN `salario`FLOAT NOT NULL;
+
+ALTER TABLE `clientes`
+	DROP COLUMN `pais`;
+
+ALTER TABLE `facturas`
+	ADD COLUMN `total_factura`FLOAT NOT NULL;
     
-    
-    
-    
+INSERT INTO `zapatillas`(`moldelo`, `color`, `marca`, `talla`)
+		VALUES ('XQYUN', 'Negro', 'Nike', 42),
+				('UOPMN', 'Rosas', 'Nike', 39),
+                ('OPNYT', 'Verdes', 'Adidas', 35);
+
+INSERT INTO `empleados`(`nombre`, `tienda`, `salario`, `fecha_incorporacion`)
+	VALUES ('Laura', 'Alcobendas', 25987, 20100903),
+			('María', 'Sevilla', 0, 20010411), -- Modificar valor 0
+            ('Esther', 'Oviedo', 30165.98, 20001129);
+ 
+ INSERT INTO `clientes`(`nombre`, `numero_telefono`, `email`, `direccion`, `ciudad`, `provincia`, `codigo_postal`)
+	VALUES ('Mónica', '123456789', 'monica@email.com', 'Calle felicidad', 'Móstoles', 'Madrid', '28176'),
+			('Lorena', '289345678', 'lorena@email.com', 'Calle alegría', 'Barcelona', 'Barcelona', '12346'),
+            ('Carmen', '298463759', 'carmen@email.com', 'Calle del color', 'Vigo', 'Pontevedra', '23456');
+            
+INSERT INTO `facturas`(`numero_factura`, `fecha`, `id_zapatilla`, `id_empleado`, `id_cliente`, `total_factura`) -- NOS DA ERROR, REVISAR. No podemos añadir un id de empleado en la tabla facturas tendría que ser modificado en empleados?
+	VALUES (123, 20011211, 1, 2, 1, 54.98),
+			(1234, 20050523, 1, 1, 3, 89.91),
+            (12345, 20150918, 2, 3, 3, 76.23);
+            
+UPDATE `zapatillas`
+SET `color`= 'Amarillas'
+WHERE `color`= 'Rosas'; 
+
+UPDATE `empleados`
+SET `tienda` = 'A coruña'
+WHERE  `id_empleado` = 1;
+
+UPDATE `clientes`
+SET `numero_telefono`= '123456728'  
+WHERE `id_cliente` = 1;  
+
+UPDATE `facturas`
+SET `total_factura`= 89.91
+WHERE `id_factura`= 2; 
+            
+            
